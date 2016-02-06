@@ -13,19 +13,23 @@ it does **even some time later after he sending window is closed**.
 Uses [Masquerade-js](https://github.com/ipcortex/Masquerade-JS) for Class implementation
 
 Basic Example (message sender):
+```javascript
     var queue = new localMessage();
     queue.postMessage("dial", number);
-
+```
 
 Basic Example (message receiver in another window):
+```javascript
     var queue = new localMessage();
 
     queue.receiveMessage("dial")
       .then((function(number){
         console.log('asked to dial '+number);
       }));
+```
 
 Additional Example (send complex object, fire then() when it is received):
+```javascript
     var queue = new localMessage();
     var message = { type:'new', priority:1, action:'fire'}
 
@@ -33,6 +37,7 @@ Additional Example (send complex object, fire then() when it is received):
       .then((function(sent){
           console.log('receiver got message type: '+sent.value.type);
       }));
+```
 <a name="localMessage"></a>
 ## localMessage
 **Kind**: global class  
