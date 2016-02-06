@@ -67,24 +67,25 @@ var localMessage = new Class({
         this.queue.forEach(function(request) {
             var item = localStorage.getItem(this.prefix + request.name);
             var itemExists = (item != null && item.length);
-            if ((!ev || ev.key == this.prefix + request.name) && !request.resolved)
-            // This is a pop request and a matching localStorage item has just been posted
+            if ((!ev || ev.key == this.prefix + request.name) && !request.resolved) {
+                // This is a pop request and a matching localStorage item has just been posted
                 if (request.pop && itemExists) {
                     request.resolved = true;
                     localStorage.removeItem(this.prefix + request.name);
                     request.ret.resolve(JSON.parse(item));
                 }
-            // This is a push request and matching previous message has just been consumed
+                // This is a push request and matching previous message has just been consumed
                 else if (!request.pop && !itemExists) {
-                // Previous post has been received, inform sender and destroy it
-                if (request.sent && !request.resolved) {
-                    request.resolved = true;
-                    request.ret.resolve(request);
-                }
-                // Put next message off queue into localStorage
-                else {
-                    localStorage.setItem(this.prefix + request.name, JSON.stringify(request.value));
-                    request.sent = true;
+                    // Previous post has been received, inform sender and destroy it
+                    if (request.sent && !request.resolved) {
+                        request.resolved = true;
+                        request.ret.resolve(request);
+                    }
+                    // Put next message off queue into localStorage
+                    else {
+                        localStorage.setItem(this.prefix + request.name, JSON.stringify(request.value));
+                        request.sent = true;
+                    }
                 }
             }
         }, this);
