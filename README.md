@@ -29,7 +29,13 @@ Uses [Masquerade-js](https://github.com/ipcortex/Masquerade-JS) for Class implem
       }));
 ```
 
-## Additional Example (send complex object, fire then() when received):
+Both postMessage and receiveMessage return promises which resolve when a message is
+successfully **received** by the consumer. At present there are no circumstances that
+cause either the sender or receiver promise to reject (error). The message either
+gets received, it which case both sender and recipient are told, or it is lost silently.
+This is probably bad.
+
+## Additional Example (this() execution by sender on receipt):
 ```javascript
     var queue = new localMessage();
     var message = { type:'new', priority:1, action:'fire'}
@@ -39,6 +45,7 @@ Uses [Masquerade-js](https://github.com/ipcortex/Masquerade-JS) for Class implem
           console.log('receiver got message type: '+sent.value.type);
       }));
 ```
+# Class definition
 <a name="localMessage"></a>
 ## localMessage
 **Kind**: global class  
