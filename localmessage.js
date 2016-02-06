@@ -79,7 +79,7 @@ var localMessage = new Class({
                 // Previous post has been received, inform sender and destroy it
                 if (request.sent && !request.resolved) {
                     request.resolved = true;
-                    request.ret.resolve(request.name);
+                    request.ret.resolve(request);
                 }
                 // Put next message off queue into localStorage
                 else {
