@@ -1,24 +1,25 @@
-## localMessage
+# localMessage
 
-This is a simple implementation of a Javascript class which should runs in a browser and
-passes messages between windows or tabs that share the same origin.
+This is a simple implementation of a Javascript class which
+passes messages between windows or tabs in a browser that share the same origin.
 
 Messages are passed using only localStorage so it isn't necessary to have a
 window object in order to communicate and the mechanism survives a page reload.
 
-If the consumer window is not open, or has not yet called receiveMessage on a name
+If the consuming window is not open, or has not yet called receiveMessage on a name
 then the posted message will persist in local storage and be delivered when
 it does **even some time later after he sending window is closed**.
 
 Uses [Masquerade-js](https://github.com/ipcortex/Masquerade-JS) for Class implementation
 
-Basic Example (message sender):
+## Basic Example (message sender):
 ```javascript
     var queue = new localMessage();
+
     queue.postMessage("dial", number);
 ```
 
-Basic Example (message receiver in another window):
+## Basic Example (message receiver in another window):
 ```javascript
     var queue = new localMessage();
 
@@ -28,7 +29,7 @@ Basic Example (message receiver in another window):
       }));
 ```
 
-Additional Example (send complex object, fire then() when it is received):
+## Additional Example (send complex object, fire then() when received):
 ```javascript
     var queue = new localMessage();
     var message = { type:'new', priority:1, action:'fire'}
