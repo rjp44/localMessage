@@ -1,17 +1,7 @@
 var localMessage = new Class({
     /**
-     * Class for passing messages between any windows or tabs within a browser that
-     * share the same origin.
      *
-     * Messages are passed using only localStorage so it isn't necessary to have a
-     * window object in order to communicate and the mechanism survives a page reload.
-     *
-     * If the consumer window is not open, or has not yet called receiveMessage on a name
-     * then the posted message will persist in local storage and be delivered when
-     * it does ** even some time later after he sending window is closed **.
-     *
-     * Class implemented using {@link https://github.com/ipcortex/Masquerade-JS ipcortex Masquerade-JS}
-     * @author Rob Pickering rob@pickering.origin
+     * @author Rob Pickering rob@pickering.org
      * @name localMessage
      * @constructor
      * @param {string} [prefix] unique namespace prefix for this
@@ -19,13 +9,14 @@ var localMessage = new Class({
      * @requires ipcortex/MasquradeJS
      */
     construct: function(prefix) {
-        // Stuff we are waiting to post (e.g. because there is an unconsumed message with the same key)
+        // Stuff we are waiting to post or receive
         this.queue = [];
-
         this.prefix = (prefix) ? prefix : "localMessage$";
+
         window.addEventListener('storage', (function(event) {
             this._queueRunner(event);
         }).bind(this));
+
     },
 
     /**
@@ -77,20 +68,20 @@ var localMessage = new Class({
             var item = localStorage.getItem(this.prefix + request.name);
             var itemExists = (item != null && item.length);
             if ((!ev || ev.key == this.prefix + request.name) && !request.resolved)
-            // This is a pop request and a matching localStorage item has been posted
+            // This is a pop request and a matching localStorage item has just been posted
                 if (request.pop && itemExists) {
                     request.resolved = true;
                     localStorage.removeItem(this.prefix + request.name);
                     request.ret.resolve(JSON.parse(item));
                 }
-                // This is a push request and any previous message has been consumed
+            // This is a push request and matching previous message has just been consumed
                 else if (!request.pop && !itemExists) {
                 // Previous post has been received, inform sender and destroy it
                 if (request.sent && !request.resolved) {
                     request.resolved = true;
                     request.ret.resolve(request.name);
                 }
-                // Send next message off queue
+                // Put next message off queue into localStorage
                 else {
                     localStorage.setItem(this.prefix + request.name, JSON.stringify(request.value));
                     request.sent = true;
