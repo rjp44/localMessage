@@ -8,9 +8,17 @@ window object in order to communicate and the mechanism survives a page reload.
 
 If the consuming window is not open, or has not yet called receiveMessage on a name
 then the posted message will persist in local storage and be delivered when
-it does **even some time later after he sending window is closed**.
+it does **even some time later after the sending window is closed**.
 
-Uses [Masquerade-js](https://github.com/ipcortex/Masquerade-JS) for Class implementation
+This is a neat way to get around the limitations of the browser [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)
+mechanism with respect to needing a window reference and inter-tab issues, but
+should probably be used sparingly. It's (ab-)use of localStorage probably causes quite
+a lot of overhead in the browser as this is a persistent which is written down to disk.
+It probably isn't appropriate to use this class to send large or very frequent messages.
+
+Uses [Masquerade-js](https://github.com/ipcortex/Masquerade-JS) for Class implementation.
+
+
 
 ## Basic Example (message sender):
 ```javascript
