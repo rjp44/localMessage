@@ -40,7 +40,7 @@ var localMessage = new Class({
             this._queueRunner({
                 key: this.prefix + name
             });
-        }).bind(this));
+        }).base(this));
     },
 
     /**
