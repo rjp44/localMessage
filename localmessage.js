@@ -39,7 +39,7 @@ var localMessage = new Class({
             });
             this._queueRunner({
                 key: this.prefix + name
-            });
+            }); 
         }).base(this));
     },
 
