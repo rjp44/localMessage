@@ -27,17 +27,20 @@ var localMessage = new Class({
      *   received by the consumer
      */
     postMessage: function(name, value) {
-        var ret = Promise.defer();
-        this.queue.push({
-            pop: false,
-            name: name,
-            value: value,
-            ret: ret
-        });
-        this._queueRunner({
-            key: this.prefix + name
-        });
-        return ret.promise;
+        return (new Promise(function(resolve, reject) {
+            this.queue.push({
+                pop: false,
+                name: name,
+                value: value,
+                ret: {
+                        resolve: resolve,
+                        reject: reject
+                }
+            });
+            this._queueRunner({
+                key: this.prefix + name
+            });
+        }));
     },
 
     /**
@@ -48,16 +51,20 @@ var localMessage = new Class({
      */
 
     receiveMessage: function(name) {
-        var ret = Promise.defer();
-        this.queue.push({
-            pop: true,
-            name: name,
-            ret: ret
-        });
-        this._queueRunner({
-            key: this.prefix + name
-        });
-        return ret.promise;
+        return (new Promise(function(resolve, reject) {
+            this.queue.push({
+                pop: true,
+                name: name,
+                ret: {
+                    resolve: resolve,
+                    reject: reject
+                }
+            });
+            this._queueRunner({
+                key: this.prefix + name
+            });
+        }));
+
     },
 
     _queueRunner: function(ev) {
