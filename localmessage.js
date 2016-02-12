@@ -27,7 +27,7 @@ var localMessage = new Class({
      *   received by the consumer
      */
     postMessage: function(name, value) {
-        return (new Promise(function(resolve, reject) {
+        return (new Promise((function(resolve, reject) {
             this.queue.push({
                 pop: false,
                 name: name,
@@ -40,7 +40,7 @@ var localMessage = new Class({
             this._queueRunner({
                 key: this.prefix + name
             });
-        }).bind(this));
+        }).bind(this)));
     },
 
     /**
@@ -51,7 +51,7 @@ var localMessage = new Class({
      */
 
     receiveMessage: function(name) {
-        return (new Promise(function(resolve, reject) {
+        return (new Promise((function(resolve, reject) {
             this.queue.push({
                 pop: true,
                 name: name,
@@ -63,7 +63,7 @@ var localMessage = new Class({
             this._queueRunner({
                 key: this.prefix + name
             });
-        }).bind(this));
+        }).bind(this)));
 
     },
 
